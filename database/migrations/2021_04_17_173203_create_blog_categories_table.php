@@ -6,26 +6,33 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateBlogCategoriesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('blog_categories', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
-        });
-    }
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('blog_categories', function (Blueprint $table) {
+			$table->bigIncrements('id');
+			$table->bigInteger('parent_id')->unsigned()->default(0);
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('blog_categories');
-    }
+			$table->string('slug')->unique();
+			$table->string('title');
+			$table->text('description')->nullable();
+
+			$table->timestamps();
+			$table->softDeletes();
+		});
+	}
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::dropIfExists('blog_categories');
+	}
 }
